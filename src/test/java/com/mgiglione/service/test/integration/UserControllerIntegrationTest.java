@@ -21,11 +21,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.mgiglione.controller.MangaController;
+import com.mgiglione.controller.UserController;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class MangaControllerIntegrationTest {
+public class UserControllerIntegrationTest {
 
     // @Autowired
     MockMvc mockMvc;
@@ -35,25 +35,25 @@ public class MangaControllerIntegrationTest {
     protected WebApplicationContext wac;
 
     @Autowired
-    MangaController mangaController;
+    UserController userController;
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = standaloneSetup(this.mangaController).build();// Standalone context
+        this.mockMvc = standaloneSetup(this.userController).build();// Standalone context
         // mockMvc = MockMvcBuilders.webAppContextSetup(wac)
         // .build();
     }
 
     @Test
     public void testSearchSync() throws Exception {
-        mockMvc.perform(get("/manga/sync/ken").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/users/sync/Bret").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.*.title", hasItem(is("Hokuto no Ken"))));
+            .andExpect(jsonPath("$.*.name", hasItem(is("Leanne Graham"))));
     }
 
     @Test
     public void testSearchASync() throws Exception {
-        MvcResult result = mockMvc.perform(get("/manga/async/ken").contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/users/async/Bret").contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(request().asyncStarted())
             .andDo(print())
@@ -62,7 +62,7 @@ public class MangaControllerIntegrationTest {
         mockMvc.perform(asyncDispatch(result))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.*.title", hasItem(is("Hokuto no Ken"))));
+            .andExpect(jsonPath("$.*.name", hasItem(is("Leanne Graham"))));
 
     }
 

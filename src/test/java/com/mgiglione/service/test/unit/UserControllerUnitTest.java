@@ -26,13 +26,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.mgiglione.controller.MangaController;
-import com.mgiglione.model.Manga;
-import com.mgiglione.service.MangaService;
+import com.mgiglione.controller.UserController;
+import com.mgiglione.model.User;
+import com.mgiglione.service.UserService;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class MangaControllerUnitTest {
+public class UserControllerUnitTest {
 
     MockMvc mockMvc;
 
@@ -40,45 +40,38 @@ public class MangaControllerUnitTest {
     protected WebApplicationContext wac;
 
     @Autowired
-    MangaController mangaController;
+    UserController userController;
 
     @MockBean
-    MangaService mangaService;
+    UserService userService;
     
     /**
      * List of samples mangas
      */
-    private List<Manga> mangas;
+    private User[] users;
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = standaloneSetup(this.mangaController).build();// Standalone context
+        this.mockMvc = standaloneSetup(this.userController).build();// Standalone context
         // mockMvc = MockMvcBuilders.webAppContextSetup(wac)
         // .build();
-        Manga manga1 = Manga.builder()
-            .title("Hokuto no ken")
-            .description("The year is 199X. The Earth has been devastated by nuclear war...")
-            .build();
-        Manga manga2 = Manga.builder()
-            .title("Yumekui Kenbun")
-            .description("For those who suffer nightmares, help awaits at the Ginseikan Tea House, where patrons can order much more than just Darjeeling. Hiruko is a special kind of a private investigator. He's a dream eater....")
-            .build();
-
-        mangas = new ArrayList<>();
-        mangas.add(manga1);
-        mangas.add(manga2);
+        User user1 = User.builder().id(1).name("Ramy").username("ribrahim").build();
+        User user2 = User.builder().id(2).name("Karim").username("kfawzy").build();
+        users = new User[3];
+        users[0] = user1;
+        users[1] = user2;
     }
 
     @Test
     public void testSearchSync() throws Exception {
         
         // Mocking service
-        when(mangaService.getMangasByTitle(any(String.class))).thenReturn(mangas);
+        when(userService.getUserByName(any(String.class))).thenReturn(users);
 
-        mockMvc.perform(get("/manga/sync/ken").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/users/sync/ribrahim").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].title", is("Hokuto no ken")))
-            .andExpect(jsonPath("$[1].title", is("Yumekui Kenbun")));
+            .andExpect(jsonPath("$[0].name", is("Ramy")))
+            .andExpect(jsonPath("$[1].name", is("Karim")));
     }
 
     @Test
@@ -86,9 +79,9 @@ public class MangaControllerUnitTest {
        
 
         // Mocking service
-        when(mangaService.getMangasByTitle(any(String.class))).thenReturn(mangas);
+        when(userService.getUserByName(any(String.class))).thenReturn(users);
 
-        MvcResult result = mockMvc.perform(get("/manga/async/ken").contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/users/async/ramy").contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(request().asyncStarted())
             .andDo(print())
@@ -100,7 +93,7 @@ public class MangaControllerUnitTest {
         mockMvc.perform(asyncDispatch(result))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].title", is("Hokuto no ken")));
+            .andExpect(jsonPath("$[0].name", is("Ramy")));
 
     }
 }

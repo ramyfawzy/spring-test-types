@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication(scanBasePackages = { "com.mgiglione" })
 @EnableAsync
-public class MangaApplication {
+public class UserApplication {
 
     @Bean
     protected RestTemplate getTemplate() {
@@ -16,7 +16,7 @@ public class MangaApplication {
     }
     
     public static void main(String[] args) {
-        new SpringApplicationBuilder(MangaApplication.class).run(args);
+        new SpringApplicationBuilder(UserApplication.class).run(args);
     }
     
     

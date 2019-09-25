@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class MangaResult {
+public class UserResult {
+	
+	private List<User> result;
 
-    private List<Manga> result;
-    
 }

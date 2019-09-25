@@ -17,17 +17,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.mgiglione.model.Manga;
-import com.mgiglione.model.MangaResult;
-import com.mgiglione.service.MangaService;
+import com.mgiglione.model.User;
+import com.mgiglione.service.UserService;
 import com.mgiglione.utils.JsonUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MangaServiceUnitTest {
+public class UserServiceUnitTest {
 
     @Autowired
-    private MangaService mangaService;
+    private UserService userService;
 
     // MockBean is the annotation provided by Spring that wraps mockito one
     // Annotation that can be used to add mocks to a Spring ApplicationContext.
@@ -38,16 +37,16 @@ public class MangaServiceUnitTest {
     @Test
     public void testGetMangasByTitle() throws IOException {
         // Parsing mock file
-        MangaResult mRs = JsonUtils.jsonFile2Object("ken.json", MangaResult.class);
+        User[] mRs = JsonUtils.jsonFile2Object("uss.json", User[].class);
         // Mocking remote service
         when(template.getForEntity(any(String.class), any(Class.class))).thenReturn(new ResponseEntity(mRs, HttpStatus.OK));
         // I search for goku but system will use mocked response containing only ken, so I can check that mock is used.
-        List<Manga> mangasByTitle = mangaService.getMangasByTitle("goku");
+        User[] mangasByTitle = userService.getUserByTitle("goku");
         assertThat(mangasByTitle).isNotNull()
             .isNotEmpty()
-            .allMatch(p -> p.getTitle()
+            .allMatch(p -> p.getName()
                 .toLowerCase()
-                .contains("ken"));
+                .contains("leanne"));
 
     }
 
