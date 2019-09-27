@@ -25,7 +25,7 @@ public class UserController {
     private UserService userService;   
 
     @GetMapping(value = "/async/{name}")
-    @Async
+    @Async("asyncExecutor")
     public CompletableFuture<User[]> searchASync(@PathVariable(name = "name") String title) {
         return CompletableFuture.completedFuture(userService.getUserByName(title));
     }

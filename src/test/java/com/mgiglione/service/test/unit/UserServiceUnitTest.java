@@ -44,7 +44,7 @@ public class UserServiceUnitTest {
         User[] mangasByTitle = userService.getUserByTitle("goku");
         assertThat(mangasByTitle).isNotNull()
             .isNotEmpty()
-            .allMatch(p -> p.getName()
+            .anyMatch(p -> p.getName()
                 .toLowerCase()
                 .contains("leanne"));
 
