@@ -40,8 +40,7 @@ public class UserControllerIntegrationTest {
     @Before
     public void setup() throws Exception {
         this.mockMvc = standaloneSetup(this.userController).build();// Standalone context
-        // mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-        // .build();
+        // mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
     @Test
