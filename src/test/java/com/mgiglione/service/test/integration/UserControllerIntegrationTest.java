@@ -27,7 +27,6 @@ import com.mgiglione.controller.UserController;
 @RunWith(SpringRunner.class)
 public class UserControllerIntegrationTest {
 
-    // @Autowired
     MockMvc mockMvc;
     
 
