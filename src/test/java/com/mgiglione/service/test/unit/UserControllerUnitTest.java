@@ -45,9 +45,6 @@ public class UserControllerUnitTest {
     @MockBean
     UserService userService;
     
-    /**
-     * List of samples mangas
-     */
     private User[] users;
 
     @Before
